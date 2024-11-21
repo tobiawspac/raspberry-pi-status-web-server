@@ -35,13 +35,7 @@ Stáhni nebo vytvoř soubor `cpu_temperature_monitor.py` do složky `/var/www/ht
 sudo nano /var/www/html/cpu_temperature_monitor.py
 ```
 
-### 3. Skript pro monitorování teploty CPU
-
-Vytvořte soubor `cpu_temperature_monitor.py` v adresáři `/var/www/html/` a vložte následující Python kód, který získá teplotu CPU a uloží ji do souboru:
-
-### 3. Skript pro monitorování teploty CPU a využití RAM a CPU
-
-Vytvořte soubor `cpu_ram_monitor.py` v adresáři `/var/www/html/` a vložte následující Python kód, který získá teplotu CPU a využití RAM a CPU, a uloží je do souboru:
+A vlož tohle.
 
 ```python
 import subprocess
