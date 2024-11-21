@@ -27,4 +27,11 @@ Pokud nemáš nainstalovaný Python 3, nainstaluj ho pomocí:
 
 ```bash
 sudo apt install python3
+```
+## 3. Skript pro monitorování teploty
+Stáhni nebo vytvoř soubor `cpu_temperature_monitor.py` do složky `/var/www/html/`:
+
+```bash
+sudo nano /var/www/html/cpu_temperature_monitor.py
+```
 
