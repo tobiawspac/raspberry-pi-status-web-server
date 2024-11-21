@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>raspberrypi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        .status-info {
+            font-size: 18px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .cpu-usage {
+            background-color: #f44336;
+        }
+        
+        .ram-usage {
+            background-color: #4caf50;
+        }
+        
+        .cpu-temp {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Status Server</h1>
+    <div id="status" class="status-info">
+        Načítám...
+    </div>
+
+    <h2>Teplota CPU</h2>
+    <div id="cpu-temp-bar" class="progress-container">
+        <div id="cpu-temp" class="progress-bar cpu-temp">Načítám...</div>
+    </div>
+
+    <h2>Využití CPU</h2>
+    <div id="cpu-usage-bar" class="progress-container">
+        <div id="cpu-usage" class="progress-bar cpu-usage">Načítám...</div>
+    </div>
+
+    <h2>Využití RAM</h2>
+    <div id="ram-usage-bar" class="progress-container">
+        <div id="ram-usage" class="progress-bar ram-usage">Načítám...</div>
+    </div>
+
+    <script>
+        function updateStatus() {
+            fetch('status.txt') // Načte obsah souboru status.txt
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('status').innerText = data;
+                    // Získání hodnot z textu                                                   let cpuTemp = data.match(/Teplota CPU: (\d+(\.\d+)?)/);                     let cpuUsage = data.match(/Využití CPU: (\d+(\.\d+)?)/);                    let ramUsage = data.match(/Využitá RAM: (\d+(\.\d+)?)/);                    let ramTotal = data.match(/\/ (\d+(\.\d+)?)/);  // Celk>
+
+                    if (cpuTemp) {
+                        let temp = parseFloat(cpuTemp[1]);
+                        updateTemperatureBar('cpu-temp', temp, 100);
+                    }
+
+                    if (cpuUsage) {
+                        let usage = parseFloat(cpuUsage[1]);
+                        updateProgressBar('cpu-usage', usage, 100);
+                    }
+
+                    if (ramUsage && ramTotal) {
+                        let usedRam = parseFloat(ramUsage[1]);
+                        let totalRam = parseFloat(ramTotal[1]);
+
+                        // Zmenšený ukazatel pro RAM (v MB) a převedený na >                        let ramPercent = (usedRam / totalRam) * 100;
+                        let ramProgress = Math.min(ramPercent, 100); // Om>                        updateProgressBar('ram-usage', ramProgress, 100);
+                    }
+                })
+                .catch(error => {
+                        document.getElementById('status').innerText = "Chyba př>                });
+                    }
+
+                    function updateProgressBar(elementId, value, max) {
+                        // Aktualizuje progress bar na stránce
+                        let progressBar = document.getElementById(elementId);
+                        progressBar.style.width = value + '%';
+                        progressBar.innerText = value.toFixed(1) + '%';
+                    }
+
+                    function updateTemperatureBar(elementId, value, max) { // Vytvoří textovou reprezentaci teploty na progress baru
+                        let progressBar = document.getElementById(elementId);
+
+                        // Pokud je teplota vyšší než 100°C, omezíme bar na maximum 100>            let tempProgress = Math.min(value, max);
+
+                        // Nastavíme šířku progress baru podle teploty
+                        progressBar.style.width = tempProgress + '%';
+                        progressBar.innerText = value.toFixed(1) + ' °C';
+                    }
+
+                    // Nastavit interval pro aktualizaci každou sekundu
+                    setInterval(updateStatus, 1000);
+
+                    // Načíst data ihned po načtení stránky
+                    updateStatus();
+    </script>
+</body>
+
+</html>
