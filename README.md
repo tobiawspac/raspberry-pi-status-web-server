@@ -21,3 +21,10 @@ Nejprve je potřeba nainstalovat Apache web server:
 ```bash
 sudo apt update
 sudo apt install apache2
+```
+## 2. Instalace Pythonu
+Pokud nemáš nainstalovaný Python 3, nainstaluj ho pomocí:
+
+```bash
+sudo apt install python3
+
