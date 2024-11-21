@@ -73,3 +73,8 @@ with open('/var/www/html/system_usage.txt', 'w', encoding='utf-8') as file:
     file.write(f"Využití CPU: {cpu_usage}\n")
     file.write(f"Využití RAM: {ram_usage}\n")
 ```
+Zmáčkněte 1 a vložte toto:
+```bash
+* * * * * python3 /var/www/html/cpu_ram_monitor.py
+
+```
