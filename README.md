@@ -76,5 +76,18 @@ with open('/var/www/html/system_usage.txt', 'w', encoding='utf-8') as file:
 Zmáčkněte 1 a vložte toto:
 ```bash
 * * * * * python3 /var/www/html/cpu_ram_monitor.py
+```
+## 5. Zobrazení informací
+Uložené informace o teplotě CPU a využití RAM a CPU můžete zobrazit na webové stránce. V prohlížeči otevřete adresu:
 
+```arduino
+http://<IP_adresa_Raspberry_Pi>/system_usage.txt
+```
+Tento soubor bude obsahovat aktuální hodnoty teploty CPU, využití CPU a využití RAM ve formátu:
+
+```yaml
+Zkopírovat kód
+Teplota CPU: XX.X °C
+Využití CPU: XX%
+Využití RAM: X.X/X.X GB
 ```
