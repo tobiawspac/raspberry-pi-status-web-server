@@ -35,3 +35,47 @@ Stáhni nebo vytvoř soubor `cpu_temperature_monitor.py` do složky `/var/www/ht
 sudo nano /var/www/html/cpu_temperature_monitor.py
 ```
 
+### 3. Skript pro monitorování teploty CPU
+
+Vytvořte soubor `cpu_temperature_monitor.py` v adresáři `/var/www/html/` a vložte následující Python kód, který získá teplotu CPU a uloží ji do souboru:
+
+### 3. Skript pro monitorování teploty CPU a využití RAM a CPU
+
+Vytvořte soubor `cpu_ram_monitor.py` v adresáři `/var/www/html/` a vložte následující Python kód, který získá teplotu CPU a využití RAM a CPU, a uloží je do souboru:
+
+```python
+import subprocess
+
+def get_cpu_temperature():
+    # Spuštění příkazu pro získání teploty CPU
+    temp = subprocess.run(['vcgencmd', 'measure_temp'], capture_output=True, text=True)
+    return temp.stdout.split('=')[1].split("'")[0]
+
+def get_cpu_usage():
+    # Spuštění příkazu pro získání využití CPU
+    cpu_usage = subprocess.run(['top', '-bn1', '|', 'grep', '"Cpu(s)"', '|', 'sed', 's/.*, *\([0-9.]*\)%*id.*/\1/', '|', 'awk', '{print 100 - $1 "%"}'], capture_output=True, text=True)
+    return cpu_usage.stdout.strip()
+
+def get_ram_usage():
+    # Spuštění příkazu pro získání využití RAM
+    ram_usage = subprocess.run(['free', '-h', '|', 'grep', 'Mem', '|', 'awk', '{print $3 "/" $2}'], capture_output=True, text=True)
+    return ram_usage.stdout.strip()
+
+# Získání teploty CPU
+cpu_temp = get_cpu_temperature()
+
+# Získání využití CPU a RAM
+cpu_usage = get_cpu_usage()
+ram_usage = get_ram_usage()
+
+# Výstup do konzole
+print(f"Aktuální teplota CPU: {cpu_temp} °C")
+print(f"Využití CPU: {cpu_usage}")
+print(f"Využití RAM: {ram_usage}")
+
+# Uložení informací do souboru
+with open('/var/www/html/system_usage.txt', 'w', encoding='utf-8') as file:
+    file.write(f"Teplota CPU: {cpu_temp} °C\n")
+    file.write(f"Využití CPU: {cpu_usage}\n")
+    file.write(f"Využití RAM: {ram_usage}\n")
+```
